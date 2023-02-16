@@ -27,13 +27,38 @@ class MainScreen(Screen):
 
 
 class NoteScreen(Screen):
-    ...
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+        layout_wrapper = BoxLayout(orientation="vertical")
+        bck_btn = Button(text="<--", size_hint=(.1,.1), size_hint_min=(50,50))
+        layout = BoxLayout(orientation="vertical", size_hint=(.75, 1), pos_hint={'center_x':0.5})
+
+        header = Label(text="Here will be note name", size_hint=(1, .15))
+        text_fiedld = TextInput(text="Placeholder text for new note")
+
+        layout.add_widget(header)
+        layout.add_widget(text_fiedld)
+
+        buttons_layout = BoxLayout(orientation='horizontal', size_hint=(1, .1))
+        button_save = Button(text='Save')
+        button_disscard = Button(text='delete note')
+        buttons_layout.add_widget(button_save)
+        buttons_layout.add_widget(button_disscard)
+
+        
+        layout_wrapper.add_widget(bck_btn)
+        layout_wrapper.add_widget(layout)
+        layout_wrapper.add_widget(buttons_layout)
+        
+        self.add_widget(layout_wrapper)
 
 class NotesApp(App):
     def build(self):
         sm = ScreenManager()
-        sm.add_widget(MainScreen(name="main"))
         sm.add_widget(NoteScreen(name="note"))
+        sm.add_widget(MainScreen(name="main"))
+        
         return sm
 
 if __name__=="__main__":
