@@ -7,20 +7,14 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 
 
 class ScreenButton(Button):
-    def __init__(self, screen, direction="right", goal="main", note_name ="", note_text="", **kw):
-        '''
-            To get context data for existing note pass:
-            `note_name`
-            `note_text`
-        '''
+    def __init__(self, screen, direction="right", goal="main", **kw):
+        
+      
         super().__init__(**kw)
         self.screen = screen
         self.direction = direction
         self.goal = goal
-        self.context_data = {
-            "name":note_name,
-            "text":note_text
-        }
+        
 
     def on_press(self):
         self.screen.manager.transition.direction = self.direction
@@ -35,12 +29,12 @@ class MainScreen(Screen):
         notes_num = 15
         for i in range(notes_num):
             note_wrapper = BoxLayout(size_hint=(0.75, notes_num/100), size_hint_max_y=100)
+            
             note_name = Label(text="test_note")
             edit_note_btn = ScreenButton(self, 
                                         text="edit", 
                                         size_hint=(0.25,0.25),
-                                        goal="note", direction="down",
-                                        note_name="Edited", note_text="text of th note to be edited")
+                                        goal="note", direction="down")
             note_wrapper.add_widget(note_name)
             note_wrapper.add_widget(edit_note_btn)
             notes_list.add_widget(note_wrapper)
@@ -54,7 +48,6 @@ class MainScreen(Screen):
         self.add_widget(new_note_btn)
 
 
-
 class NoteScreen(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -65,7 +58,7 @@ class NoteScreen(Screen):
 
         header = Label(text="Here will be note name", size_hint=(1, .15))
         text_field = TextInput(text="Placeholder text for new note")
-        
+
         layout.add_widget(header)
         layout.add_widget(text_field)
 
@@ -82,12 +75,15 @@ class NoteScreen(Screen):
         
         self.add_widget(layout_wrapper)
 
+
 class NotesApp(App):
     def build(self):
-        sm = ScreenManager()
         
-        sm.add_widget(MainScreen(name="main"))
+        sm = ScreenManager()
+
         sm.add_widget(NoteScreen(name="note"))
+        sm.add_widget(MainScreen(name="main"))
+        
 
         return sm
 
